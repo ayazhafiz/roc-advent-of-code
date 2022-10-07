@@ -16,6 +16,7 @@ interface Parser exposes [
         oneOf,
         opt,
         string,
+        space,
         spaces,
         newline,
         comma,
@@ -25,6 +26,7 @@ interface Parser exposes [
         dropBefore,
         dropAfter,
         sepBy,
+        byte,
     ] imports []
 
 Parser input a := input -> ParseResult input a
@@ -216,6 +218,11 @@ codeunit = \expectedCodeUnit ->
                     Err (Msg "expected char `\(errorChar)` but found `\(otherChar)`.\n While reading: `\(inputStr)`")
 
 byte = \c -> Num.toU8 c
+
+space : Parser Bytes {}
+space =
+    codeunit (byte ' ')
+    |> map (\_ -> {})
 
 spaces : Parser Bytes Str
 spaces =
